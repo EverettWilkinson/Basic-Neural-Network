@@ -192,7 +192,7 @@ class NeuralNetwork:
 l1 = NeuralNetwork.Layer(784,128, activeFunction="ReLU")
 l3 = NeuralNetwork.Layer(128,128, activeFunction="ReLU")
 l4 = NeuralNetwork.Layer(128,10, activeFunction="Softmax")
-Mlp = NeuralNetwork.MLP([l1,l3,l4],"Cross-Entropy", learningRate = .001)
+Mlp = NeuralNetwork.MLP([l1,l3,l4],"Cross-Entropy", learningRate = .005)
 
 
 images = load_mnist_images("./t10k-images.idx3-ubyte")
@@ -215,7 +215,9 @@ for i in range(len(labels)):
     temp = [0, 0, 0, 0 ,0 ,0 ,0 ,0 ,0 ,0]
     temp[labels[i]] = 1
     label.append(temp)
-Mlp.SDG_batch(np.array(label),np.array(image),4,120000)
+
+# 720000 is 720000 singular datapoints to train = 12 epochs
+Mlp.SDG_batch(np.array(label),np.array(image),4,720000)
 
 images = load_mnist_images("./t10k-images.idx3-ubyte")
 image = images / 255
@@ -226,3 +228,4 @@ for i in range(len(labels)):
     temp[labels[i]] = 1
     label.append(temp)
 print(Mlp.accuracy(label,image))
+# achieved accuracy > 97%
